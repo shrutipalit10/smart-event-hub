@@ -1,142 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Event Hub</title>
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            font-family: Arial;
-            background: #f5f7fa;
-            margin: 0;
-        }
-
-        header {
-            background: #2c3e50;
             color: white;
-            padding: 15px;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                        url("https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            font-size: 22px;
         }
 
-        .container {
-            padding: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+        .hero h1 {
+            font-size: 55px;
+            margin-bottom: 15px;
         }
 
-        .card {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .card h3 {
-            margin: 0;
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #ddd;
         }
 
         .btn {
-            margin-top: 10px;
-            padding: 10px;
+            padding: 12px 25px;
+            margin: 10px;
             border: none;
-            background: #3498db;
-            color: white;
+            border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
-            border-radius: 5px;
-            width: 100%;
+            transition: 0.3s;
         }
 
-        .btn:hover {
-            background: #2980b9;
+        .login-btn {
+            background: #00c6ff;
+            color: white;
+        }
+
+        .login-btn:hover {
+            background: #009edb;
+        }
+
+        .register-btn {
+            background: #ff4d4d;
+            color: white;
+        }
+
+        .register-btn:hover {
+            background: #cc0000;
+        }
+
+        /* FEATURES */
+        .features {
+            background: #111;
+            padding: 60px 30px;
+            text-align: center;
+        }
+
+        .features h2 {
+            margin-bottom: 30px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: black;
+            text-align: center;
+            padding: 15px;
+            color: #aaa;
         }
     </style>
 </head>
 
 <body>
 
-<header>🎉 Smart Event Hub</header>
+    <!-- HERO -->
+    <div class="hero">
+        <h1>🎉 Smart Event Hub</h1>
+        <p>Discover, Book & Experience Amazing Events</p>
 
-<div class="container" id="events"></div>
+        <div>
+            <button class="btn login-btn" onclick="goLogin()">Login</button>
+            <button class="btn register-btn" onclick="goRegister()">Register</button>
+        </div>
+    </div>
 
-<script>
+    <!-- FEATURES -->
+    <div class="features">
+        <h2>Why Choose Us?</h2>
 
-async function loadEvents() {
-    let res = await fetch("http://127.0.0.1:5001/events");
-    let events = await res.json();
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🎫 Easy Booking</h3>
+                <p>Book events in seconds with smooth checkout.</p>
+            </div>
 
-    let container = document.getElementById("events");
+            <div class="feature-card">
+                <h3>💳 Secure Payments</h3>
+                <p>UPI, Cards & Net Banking supported.</p>
+            </div>
 
-    events.forEach(event => {
+            <div class="feature-card">
+                <h3>📱 QR Tickets</h3>
+                <p>Instant QR code tickets after booking.</p>
+            </div>
 
-        let div = document.createElement("div");
-        div.className = "card";
+            <div class="feature-card">
+                <h3>❌ Easy Cancellation</h3>
+                <p>Cancel anytime with refund support.</p>
+            </div>
+        </div>
+    </div>
 
-        div.innerHTML = `
-            <h3>${event.name}</h3>
-            <p>📍 ${event.location}</p>
-            <p>📅 ${event.date}</p>
-            <p>💰 ₹${event.price}</p>
-            <button class="btn" onclick="payNow('${event.name}', ${event.price})">
-                Book Now
-            </button>
-        `;
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>© 2026 Smart Event Hub | Built by You 🚀</p>
+    </div>
 
-        container.appendChild(div);
-    });
-}
-
-async function payNow(eventName, price) {
-
-    // Create order
-    let response = await fetch("http://127.0.0.1:5001/create-order", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ amount: price })
-    });
-
-    let order = await response.json();
-
-    var options = {
-        "key": "rzp_test_SZosMAy6eYmFqz",
-        "amount": order.amount,
-        "currency": "INR",
-        "name": "Smart Event Hub",
-        "description": eventName,
-        "order_id": order.id,
-
-        "handler": async function (response){
-
-            alert("Payment Successful!");
-
-            await fetch("http://127.0.0.1:5001/book-event", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    user_email: "anish@test.com",
-                    event_name: eventName,
-                    payment_id: response.razorpay_payment_id,
-                    payment_status: "success"
-                })
-            });
-
-            alert("Booking Confirmed 🎟️");
+    <script>
+        function goLogin() {
+            window.location = "login.html";
         }
-    };
 
-    var rzp = new Razorpay(options);
-    rzp.open();
-}
-
-loadEvents();
-
-</script>
+        function goRegister() {
+            window.location = "register.html";
+        }
+    </script>
 
 </body>
 </html>

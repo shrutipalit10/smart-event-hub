@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="styles.css?v=2">
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>🎉 Smart Event Hub</h2>
+    <div>
+        <button onclick="goBookings()">My Bookings</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<div class="container">
+
+    <h1 class="page-title">Explore Events 🎟️</h1>
+
+    <div class="grid" id="events"></div>
+
+</div>
+
+<div id="chat-toggle" onclick="toggleChat()">💬</div>
+
+
+<div id="chat-box">
+    <div class="chat-header">
+        Smart Assistant 🤖
+        <span onclick="toggleChat()">✖</span>
+    </div>
+
+    <div id="chat-messages"></div>
+
+    <div class="chat-input">
+        <input id="chat-input" placeholder="Ask me anything..." />
+        <button onclick="sendMessage()">➤</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Main JS -->
+<script src="script.js"></script>
+
+</body>
+</html>
