@@ -17,7 +17,8 @@ Smart Event Hub is a full-stack web application that allows users to discover, b
 - Tools: Postman  
 
 ## 📷 Screenshots
-![smarthub]([smarthub.png](https://github.com/shrutipalit10/smart-event-hub/commit/a915aaa524d79b4e865711f2c7e72a1f19ca534a#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5L20))
+![smarthub](<img width="1326" height="613" alt="Screenshot 2026-04-21 132914" src="https://github.com/user-attachments/assets/502b456b-b27b-44dc-9fa6-5f930b217f52" />
+)
 
 ## 👩‍💻 Author
 Shruti Palit
