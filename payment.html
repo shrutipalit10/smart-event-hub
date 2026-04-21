@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+
+<h2>Pay for Event</h2>
+<button onclick="payNow()">Pay ₹500</button>
+
+<script>
+async function payNow() {
+
+    console.log("Button clicked");
+
+    // Create order from backend
+    let response = await fetch("http://127.0.0.1:5001/create-order", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ amount: 500 })
+    });
+
+    let order = await response.json();
+    console.log("Order:", order);
+
+    var options = {
+        "key": "rzp_test_SZosMAy6eYmFqz",
+        "amount": order.amount,
+        "currency": "INR",
+        "name": "Smart Event Hub",
+        "description": "Event Payment",
+        "order_id": order.id,
+
+        "handler": async function (response){
+            alert("Payment Successful!");
+
+            console.log(response);
+
+            // Send booking to backend
+            await fetch("http://127.0.0.1:5001/book-event", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_email: "anish@test.com",
+                    event_name: "Music Concert",
+                    payment_id: response.razorpay_payment_id,
+                    payment_status: "success"
+                })
+            });
+
+            alert("Booking Confirmed 🎟️");
+        },
+
+        "prefill": {
+            "name": "Anish",
+            "email": "anish@test.com"
+        },
+
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+
+    var rzp = new Razorpay(options);
+    rzp.open();
+}
+</script>
+
+</body>
+</html>
